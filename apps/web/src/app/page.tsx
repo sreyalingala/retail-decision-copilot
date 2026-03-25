@@ -19,8 +19,9 @@ export default function Page() {
             Retail Decision Copilot
           </h1>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Ask retail questions in natural language. The system generates safe SQL, runs it on PostgreSQL, and returns
-            the query, the results, and business recommendations.
+            Ask retail questions in natural language. The system routes to a vetted SQL analysis,
+            runs it on PostgreSQL, and returns transparent SQL, results, business explanation,
+            and recommended actions.
           </p>
 
           <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -28,7 +29,7 @@ export default function Page() {
               <Link href="/app">Open analyst chat</Link>
             </Button>
             <div className="text-sm text-muted-foreground">
-              Portfolio demo UI foundation (chat is a placeholder for now).
+              Includes both AI-assisted question mode and manual analyst mode.
             </div>
           </div>
         </div>

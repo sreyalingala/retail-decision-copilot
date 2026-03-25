@@ -9,8 +9,8 @@ export default function Page() {
           <h1 className="text-3xl font-semibold tracking-tight">About</h1>
           <p className="mt-3 text-muted-foreground">
             Retail Decision Copilot is a SQL-first analytics assistant designed for retail business analysts.
-            It turns natural-language questions into safe, read-only SQL and returns the query, results, and
-            business-ready recommendations.
+            It supports AI-assisted natural-language routing to vetted analyses and keeps SQL fully visible,
+            along with results, business explanation, and recommended actions.
           </p>
 
           <div className="mt-8 grid gap-4 md:grid-cols-2">

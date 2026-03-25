@@ -3,6 +3,7 @@ import type {
   RunAnalysisRequest,
   RunAnalysisResponse,
 } from "@/types/analytics";
+import type { QueryRequest, QueryResponse } from "@/types/api";
 
 function getApiBaseUrl() {
   return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
@@ -39,5 +40,23 @@ export async function runAnalysis(
   }
 
   return (await res.json()) as RunAnalysisResponse;
+}
+
+export async function askBusinessQuestion(
+  payload: QueryRequest,
+): Promise<QueryResponse> {
+  const baseUrl = getApiBaseUrl();
+  const res = await fetch(`${baseUrl}/query`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`Failed to run AI query (${res.status}): ${text || res.statusText}`);
+  }
+
+  return (await res.json()) as QueryResponse;
 }
 

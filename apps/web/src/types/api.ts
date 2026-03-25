@@ -1,24 +1,22 @@
 export type QueryRequest = {
   question: string;
-  context?: {
-    timezone?: string;
-    currency?: string;
-    top_k?: number;
-  };
-  max_rows?: number;
 };
 
 export type QueryResponse = {
+  question: string;
+  selected_analysis_name: string;
+  selected_parameters: Record<string, unknown>;
+  reasoning_short: string;
   sql: string;
-  result: {
-    columns: string[];
-    rows: any[][];
+  columns: string[];
+  rows: unknown[][];
+  metadata: {
+    row_count: number;
+    execution_time_ms: number;
+    error?: string;
   };
   business_explanation: string;
   recommended_actions: string[];
-  meta?: {
-    row_count: number;
-    execution_ms: number;
-  };
+  status: string;
 };
 
