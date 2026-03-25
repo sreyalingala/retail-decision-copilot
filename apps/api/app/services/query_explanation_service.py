@@ -37,7 +37,7 @@ def generate_business_explanation_and_actions(
 
     if not rows:
         return (
-            "No rows were returned for this analysis window, so there is nothing to interpret.",
+            "The analysis ran successfully but returned no rows for the selected date range.",
             ["Try widening the time window or removing restrictive filters."],
         )
 

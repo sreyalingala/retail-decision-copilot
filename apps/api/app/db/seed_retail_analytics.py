@@ -833,17 +833,19 @@ def seed_retail_analytics(engine: Engine, *, reset: bool = True) -> Dict[str, in
                         order_id_counter += 1
 
                     if len(inventory_values_chunk) >= inv_chunk_size:
-                        conn.execute(insert(InventorySnapshot).values(inventory_values_chunk))
+                        # Use executemany-style insert for large batches to avoid oversized
+                        # single-statement parameter expansion on Postgres/Neon.
+                        conn.execute(insert(InventorySnapshot), inventory_values_chunk)
                         inventory_values_chunk = []
 
                     if len(order_values_chunk) >= order_chunk_size:
-                        conn.execute(insert(ReplenishmentOrder).values(order_values_chunk))
+                        conn.execute(insert(ReplenishmentOrder), order_values_chunk)
                         order_values_chunk = []
 
         if inventory_values_chunk:
-            conn.execute(insert(InventorySnapshot).values(inventory_values_chunk))
+            conn.execute(insert(InventorySnapshot), inventory_values_chunk)
         if order_values_chunk:
-            conn.execute(insert(ReplenishmentOrder).values(order_values_chunk))
+            conn.execute(insert(ReplenishmentOrder), order_values_chunk)
 
         return _count_rows(conn)
 

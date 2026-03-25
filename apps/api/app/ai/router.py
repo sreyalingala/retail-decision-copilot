@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-import json
-from datetime import date, timedelta
+from datetime import date
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -11,6 +10,10 @@ from app.sql.analytics.registry import ANALYSIS_CATALOG, AnalysisSpec, ParamSpec
 
 
 DEFAULT_ANALYSIS_NAME = "revenue_by_month"
+# Seed defaults (from seed_retail_analytics.py):
+# start_date = 2025-10-01, snapshot_span_days = 120 => end_date = 2026-01-28
+SEEDED_DEFAULT_START_DATE = date(2025, 10, 1)
+SEEDED_DEFAULT_END_DATE = date(2026, 1, 28)
 
 
 def _load_prompt() -> str:
@@ -33,8 +36,9 @@ def _build_catalog_context() -> str:
 
 def _default_params_for_analysis(analysis_name: str, *, end_date: date) -> Dict[str, Any]:
     spec = ANALYSIS_CATALOG[analysis_name]
-    start_date = (end_date - timedelta(days=60)).isoformat()
-    end_date_s = end_date.isoformat()
+    # Use deterministic seeded window so demo environments return rows.
+    start_date = SEEDED_DEFAULT_START_DATE.isoformat()
+    end_date_s = SEEDED_DEFAULT_END_DATE.isoformat()
     defaults: Dict[str, Any] = {}
 
     for p in spec.parameters:
@@ -59,6 +63,42 @@ def _default_params_for_analysis(analysis_name: str, *, end_date: date) -> Dict[
             defaults[p.name] = None
 
     return defaults
+
+
+def _heuristic_route(question: str) -> Optional[Dict[str, Any]]:
+    """
+    Lightweight, interview-friendly routing heuristics for obvious intents.
+    Runs before model call to reduce poor fallback behavior.
+    """
+    q = question.lower()
+
+    promo_keywords = ["promotion", "promotions", "promo", "lift", "uplift", "discount effectiveness"]
+    margin_keywords = ["margin", "hurt margin", "margin impact", "gross margin"]
+    discount_keywords = ["discount", "discounts", "markdown"]
+
+    if any(k in q for k in promo_keywords) and any(k in q for k in margin_keywords):
+        analysis_name = "promotion_effectiveness"
+        return {
+            "analysis_name": analysis_name,
+            "parameters": _default_params_for_analysis(
+                analysis_name, end_date=SEEDED_DEFAULT_END_DATE
+            ),
+            "reasoning_short": "Heuristic routing: promotion + margin impact intent matched promotion_effectiveness.",
+            "status": "heuristic",
+        }
+
+    if any(k in q for k in discount_keywords):
+        analysis_name = "discount_impact"
+        return {
+            "analysis_name": analysis_name,
+            "parameters": _default_params_for_analysis(
+                analysis_name, end_date=SEEDED_DEFAULT_END_DATE
+            ),
+            "reasoning_short": "Heuristic routing: discount impact intent matched discount_impact.",
+            "status": "heuristic",
+        }
+
+    return None
 
 
 def _coerce_param_value(param: ParamSpec, value: Any) -> Any:
@@ -176,8 +216,12 @@ def route_question_to_analysis(question: str) -> Dict[str, Any]:
     No SQL generation.
     """
 
-    end_date = date.today()
+    end_date = SEEDED_DEFAULT_END_DATE
     catalog_context = _build_catalog_context()
+
+    heuristic = _heuristic_route(question)
+    if heuristic is not None:
+        return heuristic
 
     if not settings.OPENAI_API_KEY.strip():
         return {
