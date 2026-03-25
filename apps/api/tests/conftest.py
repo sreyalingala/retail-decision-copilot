@@ -17,6 +17,9 @@ def client() -> TestClient:
     os.environ.setdefault("APP_ENV", "test")
     os.environ.setdefault("FRONTEND_URL", "http://localhost:3000")
     os.environ.setdefault("LOG_LEVEL", "INFO")
+    # Dummy key so the routing layer exercises the OpenAI path in tests.
+    os.environ.setdefault("OPENAI_API_KEY", "test")
+    os.environ.setdefault("OPENAI_MODEL", "gpt-4.1-mini")
     os.environ.setdefault(
         "DATABASE_URL",
         "postgresql+psycopg://postgres:postgres@localhost:5432/retail_decision_copilot_test",

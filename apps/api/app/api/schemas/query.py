@@ -1,22 +1,24 @@
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
 
 class QueryRequest(BaseModel):
     question: str = Field(..., min_length=1)
-
-    # Optional future context (timezone, filters, etc.)
-    context: Optional[Dict[str, Any]] = None
-    max_rows: Optional[int] = None
+    # No other fields for now (AI routing picks a supported analysis + parameters).
 
 
 class QueryResponse(BaseModel):
     question: str
+    selected_analysis_name: str
+    selected_parameters: Dict[str, Any]
+    reasoning_short: str
+
     sql: str
-    rows: list[list[Any]]
-    columns: list[str]
+    columns: List[str]
+    rows: List[List[Any]]
+    metadata: Dict[str, Any]
     business_explanation: str
-    recommended_actions: list[str]
+    recommended_actions: List[str]
     status: str
 

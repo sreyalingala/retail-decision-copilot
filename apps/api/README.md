@@ -21,4 +21,16 @@ The backend exposes analyst-grade SQL analyses via:
 
 This is parameter-driven only for now (no AI / no NL-to-SQL yet). Later phases will use AI to choose `analysis_name` and parameters.
 
+## AI Routing Layer (safe catalog selection)
+
+The backend now supports an initial AI routing layer via:
+- `POST /query`
+
+Behavior today:
+- The model selects an `analysis_name` and `parameters` from the supported analytics catalog.
+- It does NOT generate arbitrary SQL.
+- The selected analysis is executed through the existing SQL analytics layer.
+
+Future phases will extend this toward stricter NL-to-SQL guardrails, but the system remains SQL-first and SELECT-only.
+
 
