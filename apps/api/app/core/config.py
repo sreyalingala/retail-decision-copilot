@@ -23,6 +23,9 @@ class Settings(BaseSettings):
     # Logging
     LOG_LEVEL: str = "INFO"
 
+    # SQL execution limits (portfolio safety guardrail; full guardrails later)
+    SQL_MAX_ROWS: int = 200
+
     model_config = SettingsConfigDict(
         env_file=".env",
         extra="ignore",
