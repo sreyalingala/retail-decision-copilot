@@ -1,6 +1,6 @@
 # Retail Decision Copilot
 
-**A SQL-first retail analytics app** where you can ask business questions in plain language or run analyses by hand—and always see the **exact PostgreSQL** behind the answer, plus a short business readout and suggested next steps.
+**A SQL-first retail analytics app** where you can ask business questions in plain language or run analyses by hand and always see the **exact PostgreSQL** behind the answer, plus a short business readout and suggested next steps.
 
 ---
 
