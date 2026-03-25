@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "lint": "echo \"TODO: add lint for shared\"",
-    "test": "echo \"TODO: add tests for shared\""
+    "lint": "echo \"Shared lint not configured yet\"",
+    "test": "echo \"Shared tests not configured yet\""
   }
 }
 

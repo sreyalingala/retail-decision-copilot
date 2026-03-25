@@ -31,3 +31,13 @@ The container starts with:
 - Neon typically requires TLS; include `?sslmode=require` in `DATABASE_URL`.
 - `/healthz` is lightweight and suitable for Render health checks.
 
+## Migrations and seed
+
+Run once after first deploy (or after schema changes):
+- `alembic upgrade head`
+
+Seed data (optional for demos):
+- `python ../../scripts/seed_db.py`
+
+If you use Render jobs/shell, run these from `apps/api` context with env vars loaded.
+

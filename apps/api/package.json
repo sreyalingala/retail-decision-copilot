@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "sh -c 'python -m uvicorn app.main:app --reload --host ${API_HOST:-0.0.0.0} --port ${API_PORT:-8000}'",
-    "lint": "echo \"TODO: add backend lint\"",
+    "lint": "echo \"Backend lint not configured yet\"",
     "test": "pytest -q",
     "seed": "test -x .venv/bin/python && .venv/bin/python -u ../../scripts/seed_db.py || python -u ../../scripts/seed_db.py"
   }

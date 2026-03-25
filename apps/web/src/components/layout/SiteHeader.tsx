@@ -13,7 +13,7 @@ export function SiteHeader() {
             Home
           </Link>
           <Link href="/app" className="hover:text-foreground transition-colors">
-            Analyst Chat
+            Analyst Workspace
           </Link>
           <Link href="/about" className="hover:text-foreground transition-colors">
             About

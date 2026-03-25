@@ -2,7 +2,6 @@
 
 Shared TypeScript contracts between the Next.js frontend and FastAPI backend.
 
-Next steps:
-- Define request/response shapes for `POST /query`
-- Share any structured “assistant turn” schema with the UI
+Current usage:
+- Shared request/response contracts for analytics and AI-routed query payloads.
 

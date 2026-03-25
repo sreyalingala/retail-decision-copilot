@@ -26,7 +26,7 @@ export default function Page() {
 
           <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Button asChild size="lg">
-              <Link href="/app">Open analyst chat</Link>
+              <Link href="/app">Open analyst workspace</Link>
             </Button>
             <div className="text-sm text-muted-foreground">
               Includes both AI-assisted question mode and manual analyst mode.
@@ -43,8 +43,8 @@ export default function Page() {
             <CardContent className="space-y-4">
               <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
                 <li>Ask a question (e.g., “top categories by margin”).</li>
-                <li>Generate SELECT-only SQL with schema validation.</li>
-                <li>Execute safely and return results + explanation.</li>
+                <li>Route the question to a vetted analysis from the analytics catalog.</li>
+                <li>Run transparent SQL and return results + explanation.</li>
               </ol>
             </CardContent>
           </Card>
@@ -56,10 +56,10 @@ export default function Page() {
             </CardHeader>
             <CardContent className="space-y-3 text-sm text-muted-foreground">
               <ul className="space-y-2">
-                <li>Allow only `SELECT` queries.</li>
-                <li>Validate referenced tables and columns.</li>
-                <li>Block destructive/multi-statement SQL.</li>
-                <li>Cap result rows and enforce statement timeouts.</li>
+                <li>Analysis routing is constrained to a vetted SQL catalog.</li>
+                <li>Every response includes full SQL transparency.</li>
+                <li>Row counts are capped for frontend-friendly responses.</li>
+                <li>AI selects analyses and parameters, not arbitrary SQL.</li>
               </ul>
             </CardContent>
           </Card>

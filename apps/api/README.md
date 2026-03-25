@@ -1,9 +1,22 @@
 # API (FastAPI)
 
-Next steps:
-- Implement `POST /query` with OpenAI SQL generation + strict SELECT-only guardrails
-- Add SQL validation (AST parsing) and allowlisted schema
-- Add Alembic migrations + seed data
+Backend for Retail Decision Copilot.
+
+Core endpoints:
+- `GET /healthz`
+- `GET /analytics`
+- `POST /analytics/run`
+- `POST /query` (AI-assisted routing to cataloged analyses)
+
+## Local run
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+alembic upgrade head
+python -m uvicorn app.main:app --reload --host ${API_HOST:-0.0.0.0} --port ${API_PORT:-8000}
+```
 
 ## Seeding the retail dataset
 
@@ -19,7 +32,7 @@ The backend exposes analyst-grade SQL analyses via:
 - `GET /analytics` (lists supported analyses + expected parameters)
 - `POST /analytics/run` (runs an analysis and returns `sql`, `columns`, `rows`, plus metadata)
 
-This is parameter-driven only for now (no AI / no NL-to-SQL yet). Later phases will use AI to choose `analysis_name` and parameters.
+This layer is deterministic and parameter-driven; SQL comes from the vetted catalog.
 
 ## AI Routing Layer (safe catalog selection)
 

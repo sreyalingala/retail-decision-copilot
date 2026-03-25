@@ -21,9 +21,9 @@ export default function Page() {
               </CardHeader>
               <CardContent className="text-sm text-muted-foreground">
                 <ul className="space-y-2">
-                  <li>Strict SQL guardrails (SELECT-only)</li>
-                  <li>Allowlisted schema validation</li>
-                  <li>Row caps and statement timeouts</li>
+                  <li>Catalog-constrained SQL execution</li>
+                  <li>Transparent SQL + result outputs</li>
+                  <li>Row caps for stable UI and demos</li>
                   <li>Typed API contracts</li>
                 </ul>
               </CardContent>

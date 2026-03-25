@@ -10,7 +10,7 @@ services:
     volumes:
       - rdc_postgres_data:/var/lib/postgresql/data
 
-  # Placeholders (actual services will be wired in later):
+  # Optional app services (run backend/frontend from workspace by default):
   # api:
   #   build: ../../apps/api
   #   ports:

@@ -1,6 +1,8 @@
 # Web (Next.js)
 
-Chat-style analyst UI.
+Business-facing analyst workspace with two modes:
+- AI Question mode (`POST /query`)
+- Manual Analysis mode (`GET /analytics`, `POST /analytics/run`)
 
 ## Environment
 
