@@ -1,0 +1,13 @@
+{
+  "name": "retail-decision-copilot",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @rdc/web",
+    "lint": "npm run lint -ws",
+    "test": "npm run test -ws"
+  }
+}

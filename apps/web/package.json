@@ -1,0 +1,13 @@
+{
+  "name": "@rdc/web",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "lint": "echo \"TODO: add ESLint for Next.js\"",
+    "test": "echo \"TODO: add frontend tests\""
+  }
+}
+

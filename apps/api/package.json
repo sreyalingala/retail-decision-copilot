@@ -1,0 +1,12 @@
+{
+  "name": "@rdc/api",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "python -m uvicorn app.main:app --reload --port 8000",
+    "lint": "echo \"TODO: add backend lint\"",
+    "test": "pytest -q",
+    "seed": "python -u ../../scripts/seed_db.py"
+  }
+}
+
