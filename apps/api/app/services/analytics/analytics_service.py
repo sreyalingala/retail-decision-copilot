@@ -31,21 +31,15 @@ def run_sql(
     bound = params or {}
     effective_max_rows = max_rows if max_rows is not None else settings.SQL_MAX_ROWS
 
-    # Apply a final row cap to keep responses frontend-friendly.
-    # This wrapper is safe for PostgreSQL and keeps the underlying analysis SQL intact.
-    if effective_max_rows is not None and effective_max_rows > 0:
-        wrapped_sql = "SELECT * FROM (" + sql + ") AS t LIMIT :__max_rows"
-        bound = {**bound, "__max_rows": effective_max_rows}
-    else:
-        wrapped_sql = sql
-
     t0 = time.perf_counter()
-    result: Result = session.execute(text(wrapped_sql), bound)
+    result: Result = session.execute(text(sql), bound)
     execution_ms = int((time.perf_counter() - t0) * 1000)
 
     # `result.keys()` are column labels in the order returned by Postgres.
     columns = list(result.keys())
     rows = [list(r) for r in result.fetchall()]
+    if effective_max_rows is not None and effective_max_rows > 0:
+        rows = rows[:effective_max_rows]
     return {
         "sql": sql,
         "columns": columns,

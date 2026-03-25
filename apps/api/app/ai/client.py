@@ -45,14 +45,14 @@ class OpenAIRoutingClient:
             "Return only a JSON object with keys: analysis_name, parameters, reasoning_short."
         )
 
+        # Keep request shape minimal and broadly compatible across supported models/SDK versions.
+        # Do not pass optional knobs that can trigger 400s for some model families.
         response = self._client.responses.create(
             model=settings.OPENAI_MODEL,
             input=[
-                {"role": "system", "content": [{"type": "text", "text": system_text}]},
-                {"role": "user", "content": [{"type": "text", "text": user_text}]},
+                {"role": "system", "content": system_text},
+                {"role": "user", "content": user_text},
             ],
-            # Keep deterministic to reduce routing variance.
-            temperature=0.0,
         )
 
         output_text = getattr(response, "output_text", None)

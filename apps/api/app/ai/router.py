@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import date
 from pathlib import Path
 from typing import Any, Dict, Optional
+import logging
 
 from app.ai.client import AnalysisRouteAIOutput, OpenAIRoutingClient
 from app.core.config import settings
@@ -14,6 +15,7 @@ DEFAULT_ANALYSIS_NAME = "revenue_by_month"
 # start_date = 2025-10-01, snapshot_span_days = 120 => end_date = 2026-01-28
 SEEDED_DEFAULT_START_DATE = date(2025, 10, 1)
 SEEDED_DEFAULT_END_DATE = date(2026, 1, 28)
+logger = logging.getLogger("rdc.api.ai")
 
 
 def _load_prompt() -> str:
@@ -239,8 +241,9 @@ def route_question_to_analysis(question: str) -> Dict[str, Any]:
         ai_raw = client.select_analysis(
             question=question, catalog_context=catalog_context
         )
-    except Exception:
+    except Exception as exc:
         # Robust deterministic fallback if OpenAI fails.
+        logger.warning("ai_routing_openai_failed: %s", str(exc))
         ai_raw = None
 
     return _validate_and_build_routing(ai_raw, question=question, end_date=end_date)

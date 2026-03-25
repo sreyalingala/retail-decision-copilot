@@ -40,6 +40,10 @@ def run_ai_routed_query(req: QueryRequest, db: Session) -> QueryResponse:
             params=selected_parameters,
         )
     except Exception as exc:
+        logger.exception(
+            "analysis_execution_failed %s",
+            {"analysis_name": selected_analysis_name, "error": str(exc)},
+        )
         # Hard fallback: keep response format stable even if DB execution fails.
         status = "error"
         return QueryResponse(
