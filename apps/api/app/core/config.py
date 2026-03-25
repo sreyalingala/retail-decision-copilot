@@ -1,4 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import model_validator
+from typing import Optional
 
 
 class Settings(BaseSettings):
@@ -8,6 +10,7 @@ class Settings(BaseSettings):
     # API
     API_HOST: str = "0.0.0.0"
     API_PORT: int = 8000
+    PORT: Optional[int] = None
 
     # Database
     # Use psycopg v3 driver explicitly for SQLAlchemy.
@@ -19,6 +22,7 @@ class Settings(BaseSettings):
 
     # Frontend
     FRONTEND_URL: str = "http://localhost:3000"
+    CORS_ORIGINS: str = ""
 
     # Logging
     LOG_LEVEL: str = "INFO"
@@ -31,6 +35,13 @@ class Settings(BaseSettings):
         extra="ignore",
         case_sensitive=False,
     )
+
+    @model_validator(mode="after")
+    def apply_port_fallback(self):
+        # Render provides PORT; prefer it when present.
+        if self.PORT:
+            self.API_PORT = self.PORT
+        return self
 
 
 settings = Settings()

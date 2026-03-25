@@ -6,7 +6,18 @@ import type {
 import type { QueryRequest, QueryResponse } from "@/types/api";
 
 function getApiBaseUrl() {
-  return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+  const configured = process.env.NEXT_PUBLIC_API_BASE_URL;
+  if (configured && configured.trim()) {
+    return configured.trim().replace(/\/+$/, "");
+  }
+
+  if (process.env.NODE_ENV !== "production") {
+    return "http://localhost:8000";
+  }
+
+  throw new Error(
+    "NEXT_PUBLIC_API_BASE_URL is required in production builds.",
+  );
 }
 
 export async function listAnalyses(): Promise<ListAnalysesResponse> {

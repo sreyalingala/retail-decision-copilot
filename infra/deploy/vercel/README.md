@@ -1,8 +1,15 @@
 # Vercel Deployment (Frontend)
 
-Placeholder deployment notes for the Next.js app.
+Deploy `apps/web` as a Next.js project on Vercel.
 
-Next steps:
-- Deploy `apps/web` to Vercel
-- Set `NEXT_PUBLIC_API_BASE_URL` to the deployed backend URL
+## Project settings
+- **Framework Preset**: Next.js
+- **Root Directory**: `apps/web`
+
+## Required environment variables
+- `NEXT_PUBLIC_API_BASE_URL=https://<your-render-backend-domain>`
+
+## Notes
+- In production, the frontend requires `NEXT_PUBLIC_API_BASE_URL` (no localhost fallback).
+- Re-deploy after setting/changing environment variables.
 

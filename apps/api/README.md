@@ -33,4 +33,20 @@ Behavior today:
 
 Future phases will extend this toward stricter NL-to-SQL guardrails, but the system remains SQL-first and SELECT-only.
 
+## Production env vars
+
+Minimum backend env vars for deployment:
+- `APP_ENV` (e.g. `production`)
+- `API_HOST` (recommend `0.0.0.0`)
+- `PORT` (provided by Render) or `API_PORT`
+- `FRONTEND_URL` (comma-separated supported)
+- `CORS_ORIGINS` (optional additional origins)
+- `DATABASE_URL` (Neon/PG, e.g. `postgresql+psycopg://...?...sslmode=require`)
+- `OPENAI_API_KEY`
+- `OPENAI_MODEL`
+- `LOG_LEVEL`
+
+Example startup command (non-Docker):
+- `python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}`
+
 

@@ -16,11 +16,30 @@ setup_logging(settings.LOG_LEVEL)
 logger = logging.getLogger("rdc.api")
 
 
-def parse_cors_origins(frontend_url: str) -> list[str]:
-    # Allow either a single URL or a comma-separated list.
-    if not frontend_url.strip():
-        return []
-    return [u.strip() for u in frontend_url.split(",") if u.strip()]
+def parse_cors_origins(frontend_url: str, cors_origins: str) -> list[str]:
+    # Support:
+    # - FRONTEND_URL as single or comma-separated values
+    # - CORS_ORIGINS as explicit override/additional values
+    origins: list[str] = []
+
+    def add_many(raw: str) -> None:
+        for u in raw.split(","):
+            u = u.strip()
+            if u and u not in origins:
+                origins.append(u)
+
+    if frontend_url.strip():
+        add_many(frontend_url)
+    if cors_origins.strip():
+        add_many(cors_origins)
+
+    # Keep local dev comfortable even when only production URL is configured.
+    local_defaults = ["http://localhost:3000", "http://127.0.0.1:3000"]
+    for u in local_defaults:
+        if u not in origins:
+            origins.append(u)
+
+    return origins
 
 
 app = FastAPI(
@@ -31,7 +50,7 @@ app = FastAPI(
     redoc_url=None,
 )
 
-origins = parse_cors_origins(settings.FRONTEND_URL)
+origins = parse_cors_origins(settings.FRONTEND_URL, settings.CORS_ORIGINS)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
