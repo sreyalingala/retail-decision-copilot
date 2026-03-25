@@ -55,7 +55,7 @@ def run_ai_routed_query(req: QueryRequest, db: Session) -> QueryResponse:
             columns=[],
             rows=[],
             metadata={"row_count": 0, "execution_time_ms": 0, "error": str(exc)},
-            business_explanation="The analysis could not be executed.",
+            business_explanation="The analysis could not be completed due to a backend execution issue.",
             recommended_actions=["Check backend logs and ensure your database is reachable."],
             status=status,
         )

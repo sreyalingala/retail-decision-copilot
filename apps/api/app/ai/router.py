@@ -77,6 +77,13 @@ def _heuristic_route(question: str) -> Optional[Dict[str, Any]]:
     promo_keywords = ["promotion", "promotions", "promo", "lift", "uplift", "discount effectiveness"]
     margin_keywords = ["margin", "hurt margin", "margin impact", "gross margin"]
     discount_keywords = ["discount", "discounts", "markdown"]
+    supplier_delay_keywords = ["supplier", "suppliers", "delay", "late delivery", "lead time"]
+    inventory_keywords = ["inventory", "stockout", "reorder", "stock on hand"]
+    low_margin_volume_keywords = [
+        "low margin high volume",
+        "high volume low margin",
+        "low-margin high-volume",
+    ]
 
     if any(k in q for k in promo_keywords) and any(k in q for k in margin_keywords):
         analysis_name = "promotion_effectiveness"
@@ -97,6 +104,30 @@ def _heuristic_route(question: str) -> Optional[Dict[str, Any]]:
                 analysis_name, end_date=SEEDED_DEFAULT_END_DATE
             ),
             "reasoning_short": "Heuristic routing: discount impact intent matched discount_impact.",
+            "status": "heuristic",
+        }
+
+    if any(k in q for k in supplier_delay_keywords) and any(
+        k in q for k in inventory_keywords + ["delay", "late"]
+    ):
+        analysis_name = "supplier_delay_analysis"
+        return {
+            "analysis_name": analysis_name,
+            "parameters": _default_params_for_analysis(
+                analysis_name, end_date=SEEDED_DEFAULT_END_DATE
+            ),
+            "reasoning_short": "Heuristic routing: supplier/delay intent matched supplier_delay_analysis.",
+            "status": "heuristic",
+        }
+
+    if any(k in q for k in low_margin_volume_keywords):
+        analysis_name = "low_margin_high_volume_products"
+        return {
+            "analysis_name": analysis_name,
+            "parameters": _default_params_for_analysis(
+                analysis_name, end_date=SEEDED_DEFAULT_END_DATE
+            ),
+            "reasoning_short": "Heuristic routing: low-margin high-volume intent matched low_margin_high_volume_products.",
             "status": "heuristic",
         }
 
@@ -223,6 +254,13 @@ def route_question_to_analysis(question: str) -> Dict[str, Any]:
 
     heuristic = _heuristic_route(question)
     if heuristic is not None:
+        logger.info(
+            "ai_routing_heuristic_selected: %s",
+            {
+                "analysis_name": heuristic["analysis_name"],
+                "status": heuristic["status"],
+            },
+        )
         return heuristic
 
     if not settings.OPENAI_API_KEY.strip():
@@ -243,7 +281,11 @@ def route_question_to_analysis(question: str) -> Dict[str, Any]:
         )
     except Exception as exc:
         # Robust deterministic fallback if OpenAI fails.
-        logger.warning("ai_routing_openai_failed: %s", str(exc))
+        err = str(exc)
+        if "insufficient_quota" in err or "429" in err:
+            logger.warning("ai_routing_openai_quota_unavailable: %s", err)
+        else:
+            logger.warning("ai_routing_openai_failed: %s", err)
         ai_raw = None
 
     return _validate_and_build_routing(ai_raw, question=question, end_date=end_date)
