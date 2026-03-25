@@ -2,6 +2,8 @@
 
 **A SQL-first retail analytics app** where you can ask business questions in plain language or run analyses by hand and always see the **exact PostgreSQL** behind the answer, plus a short business readout and suggested next steps.
 
+![Retail Decision Copilot landing page: hero, how it works, safety and transparency, and structured answer outputs](docs/assets/landing-page.png)
+
 ---
 
 ## Short overview
