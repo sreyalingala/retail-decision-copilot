@@ -6,7 +6,7 @@
     "dev": "python -m uvicorn app.main:app --reload --port 8000",
     "lint": "echo \"TODO: add backend lint\"",
     "test": "pytest -q",
-    "seed": "python -u ../../scripts/seed_db.py"
+    "seed": "test -x .venv/bin/python && .venv/bin/python -u ../../scripts/seed_db.py || python -u ../../scripts/seed_db.py"
   }
 }
 
