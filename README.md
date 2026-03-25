@@ -6,15 +6,15 @@
 
 ## Short overview
 
-Retail Decision Copilot is a portfolio project aimed at **data analyst and business analyst** workflows: revenue, margin, promotions, inventory risk, returns, and supplier performance—backed by a realistic retail schema, **parameterized analyst-grade SQL**, and a small **AI routing layer** that maps questions to those vetted queries (it does **not** generate arbitrary SQL).
+Retail Decision Copilot is a portfolio project aimed at **data analyst and business analyst** workflows: revenue, margin, promotions, inventory risk, returns, and supplier performance backed by a realistic retail schema, **parameterized analyst-grade SQL**, and a small **AI routing layer** that maps questions to those vetted queries (it does **not** generate arbitrary SQL).
 
-The UI is a clean **analyst workspace** (not a dashboard): natural-language mode, manual mode, transparent SQL, and tabular results.
+The UI is a clean **analyst workspace** (not a dashboard): natural language mode, manual mode, transparent SQL, and tabular results.
 
 ---
 
 ## Why I built this
 
-I wanted something that feels like **real analyst work**—where the hard part is framing the question, choosing the right grain, and trusting the numbers—while still being **honest about how AI fits in**.
+I wanted something that feels like **real analyst work** where the hard part is framing the question, choosing the right grain, and trusting the numbers—while still being **honest about how AI fits in**.
 
 A lot of “AI analytics” demos hide the query layer. That makes for a flashy story but a weak interview story. Here, **SQL stays center stage**: window functions, CTEs, rankings, and time comparisons live in real modules you can read and defend. The AI piece is deliberately narrow: **pick an analysis and parameters from a catalog**, then let Postgres do what Postgres is good at.
 
@@ -24,9 +24,9 @@ That combination—**transparent SQL, safe routing, business-facing copy**—mat
 
 ## What the application does
 
-1. **AI question mode** — You type a retail-style question. The backend selects one of **22** predefined analyses and fills parameters (with validation and safe defaults). You get the **SQL**, **rows**, **timing metadata**, a **short explanation**, and **recommended actions** grounded in what came back.
+1. **AI question mode** - You type a retail-style question. The backend selects one of **22** predefined analyses and fills parameters (with validation and safe defaults). You get the **SQL**, **rows**, **timing metadata**, a **short explanation**, and **recommended actions** grounded in what came back.
 
-2. **Manual analysis mode** — You choose an analysis from the catalog, set parameters yourself, and run it. Same execution path and same transparency—useful for demos and for comparing “what I meant” vs “what the model chose.”
+2. **Manual analysis mode** - You choose an analysis from the catalog, set parameters yourself, and run it. Same execution path and same transparency—useful for demos and for comparing “what I meant” vs “what the model chose.”
 
 The landing and **About** pages frame the product; the **Analyst Workspace** (`/app`) is where the work happens.
 
