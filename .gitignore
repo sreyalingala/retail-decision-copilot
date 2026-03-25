@@ -22,7 +22,8 @@ __pycache__/
 venv/
 
 # Alembic / migrations artifacts
-migrations/
+# Keep real migration scripts tracked; ignore only Python bytecode.
+**/migrations/*.pyc
 
 # Logs
 *.log
